@@ -1,0 +1,2 @@
+assume_php = false
+auto_namespace_map = {"Dict": "HH\\Lib\\Dict", "Vec": "HH\\Lib\\Vec", "Keyset": "HH\\Lib\\Keyset", "C": "HH\\Lib\\C", "Str": "HH\\Lib\\Str"}

@@ -1,0 +1,61 @@
+html {
+  width: 100vw;
+  height: 100vh;
+}
+
+h1 {
+  font-size: 8vw;
+}
+
+@media only screen and (min-width: 550px) {
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+h2 {
+  font-size: 7vw;
+}
+
+@media only screen and (min-width: 550px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+h3 {
+  font-size: 6vw;
+}
+
+@media only screen and (min-width: 550px) {
+  h3 {
+    font-size: 1.17rem;
+  }
+}
+
+h4 {
+  font-size: 1.12vw;
+}
+
+@media only screen and (min-width: 550px) {
+  h4 {
+    font-size: 1.12rem;
+  }
+}
+
+h5 {
+  font-size: 4vw;
+}
+
+@media only screen and (min-width: 550px) {
+  h5 {
+    font-size: 0.83rem;
+  }
+}
+
+hr {
+    border: none;
+    height: 2px;
+    color: #ccc;
+    background-color: #ccc;
+}
