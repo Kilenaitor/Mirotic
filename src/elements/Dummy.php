@@ -8,7 +8,7 @@ class :dummy extends :x:element {
 
   protected function render(): XHPRoot {
     return
-      <div>
+      <div style="font-family: Helvetica, sans-serif;">
         <h1>Welcome to {$this->:app-name}!</h1>
         <p>
           {$this->:app-name} is a lightweight, configurable, easy-to-use MVC

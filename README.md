@@ -29,6 +29,12 @@ Project Structure:
 
 ## Installation
 
+Mirotic uses composer for dependency management. To install, please run:
+
+```
+hhvm $(which composer) install
+```
+
 ## Running
 
 To run the server locally for debugging,

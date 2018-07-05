@@ -1,8 +1,6 @@
 <?hh
 
-session_start();
-require_once (__DIR__.'/../vendor/hh_autoload.php');
-require_once (__DIR__.'/../config/mirotic.php');
+require_once(__DIR__.'/../src/lib/init.php');
 
 // The URL provided
 $request_path = $_SERVER['REQUEST_URI'];

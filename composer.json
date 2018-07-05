@@ -3,13 +3,21 @@
     "description": "The best MVC framework for Hack+HHVM",
     "require": {
         "facebook/xhp-lib": "^2.5",
-        "hhvm/hsl": "^1.4",
-        "hhvm/type-assert": "^3.2"
+        "hhvm/hsl": "^3.27",
+        "hhvm/type-assert": "^3.2",
+        "hhvm": "^3.27",
+        "hhvm/hhvm-autoload": "^1.6"
     },
     "authors": [
         {
             "name": "Kyle Minshall",
             "email": "kyleminshall@gmail.com"
         }
-    ]
+    ],
+    "require-dev": {
+        "hhvm/hhast": "^3.27",
+        "facebook/fbexpect": "^1.1",
+        "facebook/hh-clilib": "^1.1",
+        "facebook/definition-finder": "^2.0"
+    }
 }
