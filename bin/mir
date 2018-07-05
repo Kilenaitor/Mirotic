@@ -1,0 +1,6 @@
+<?hh
+
+/* Application Init */
+require_once(__DIR__.'/../src/lib/init.php');
+
+Mir::main();
