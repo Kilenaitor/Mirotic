@@ -1,3 +1,6 @@
 {
-  "roots": [ "src/" ]
+  "roots": [ "src/" ],
+  "disabledLinters": [
+      "Facebook\\HHAST\\Linters\\AsyncFunctionAndMethodLinter"
+  ]
 }
