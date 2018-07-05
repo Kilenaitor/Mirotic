@@ -1,2 +1,5 @@
+; Global namespace
 assume_php = false
+
+; Long namespaces suck
 auto_namespace_map = {"Dict": "HH\\Lib\\Dict", "Vec": "HH\\Lib\\Vec", "Keyset": "HH\\Lib\\Keyset", "C": "HH\\Lib\\C", "Str": "HH\\Lib\\Str"}
