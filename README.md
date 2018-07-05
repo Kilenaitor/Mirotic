@@ -13,7 +13,6 @@ Project Structure:
 - `bin/`
   - `mir` -- Framework util app. Used for code generation, etc.
 - `src/`
-  - `alive.php` -- File to check if site is up and running
   - `controllers/` -- The logic for a particular route
   - `elements/` -- Place for all XHP elements
   - `exceptions/` -- Place for all exceptions
