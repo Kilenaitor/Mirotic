@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "98f715780cd56466d764aa394584e354",
+    "content-hash": "c7e8f61b96edffc4671aacbc2ff52c43",
     "packages": [
         {
             "name": "facebook/xhp-lib",
@@ -393,6 +393,66 @@
             ],
             "description": "Unit test helpers for Facebook projects",
             "time": "2018-06-11T22:04:56+00:00"
+        },
+        {
+            "name": "facebook/hack-codegen",
+            "version": "v3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hhvm/hack-codegen.git",
+                "reference": "b897ada51e4917fe0ad6cacc9b45047fa089d21b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hhvm/hack-codegen/zipball/b897ada51e4917fe0ad6cacc9b45047fa089d21b",
+                "reference": "b897ada51e4917fe0ad6cacc9b45047fa089d21b",
+                "shasum": ""
+            },
+            "require": {
+                "hhvm": ">=3.27.0",
+                "hhvm/hhvm-autoload": "^1.5",
+                "hhvm/hsl": "^1.0.0|^3.26.0"
+            },
+            "require-dev": {
+                "91carriage/phpunit-hhi": "^5.6",
+                "facebook/fbexpect": "^0.4.0|^1.0.0",
+                "hhvm/hhast": "^3.26.0",
+                "hhvm/type-assert": "^3.1",
+                "phpunit/phpunit": "^5.7"
+            },
+            "bin": [
+                "bin/hh-codegen-verify-signatures"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Drew Hoskins",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Gaurav Kumar",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alejandro Marcu",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Matthieu Martin",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Fred Emmott",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Hack Codegen is a library for programatically generating Hack code",
+            "keywords": [
+                "code generation",
+                "hack"
+            ],
+            "time": "2018-07-05T18:33:48+00:00"
         },
         {
             "name": "facebook/hh-clilib",

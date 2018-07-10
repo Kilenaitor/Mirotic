@@ -1,8 +1,13 @@
 <?hh // strict
 
-abstract class BaseAjaxController extends BasePostController {
+abstract class BaseAjaxController extends BaseController {
 
-  protected abstract function genResponse(): Awaitable<?string>;
+  <<__Override>>
+  public static function getHTTPMethod(): HTTPMethod {
+    return HTTPMethod::POST;
+  }
+
+  protected abstract async function genResponse(): Awaitable<?string>;
 
   <<__Override>>
   final public async function genRender(): Awaitable<?:xhp> {
