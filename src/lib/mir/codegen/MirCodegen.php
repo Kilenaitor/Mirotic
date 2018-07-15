@@ -62,40 +62,37 @@ final class MirCodegen extends CLIWithArguments {
   }
 
   private async function genController(): Awaitable<void> {
-    $correct = false;
-    while (!$correct) {
-      $this->controller_type = await $this->promptControllerType();
-      echo Str\format('Creating a new %s controller. ', $this->controller_type);
-      $correct =
-        await MirUtil::promptYesNo($this->getStdin(), 'Is this correct');
-    }
+    await MirUtil::genConfirm(
+      $this->getStdin(),
+      async () ==> {
+        $this->controller_type = await $this->promptControllerType();
+        echo
+          Str\format('Creating a new %s controller. ', $this->controller_type);
+      },
+    );
 
-    $correct = false;
-    while (!$correct) {
+    await MirUtil::genConfirm($this->getStdin(), async () ==> {
       $this->raw_controller_name = await $this->promptControllerName();
       $controller_name = Str\format('%sController', $this->raw_controller_name);
       echo Str\format('Controller will be named %s. ', $controller_name);
       $this->controller_name = $controller_name;
-      $correct =
-        await MirUtil::promptYesNo($this->getStdin(), 'Is this correct');
-    }
+    });
 
-    $correct = false;
-    while (!$correct) {
-      $this->directory_path = await $this->promptDirectoryName();
-      $this->directory_path .= Str\is_empty($this->directory_path) ? '' : '/';
-      $this->file_path = Str\format(
-        '%s%s%s.php',
-        self::getControllerPath(),
-        $this->directory_path,
-        $this->controller_name,
-      );
-      $this->controller_url = $this->getControllerURL();
-      echo
-        Str\format('Creating new controller at `%s`. ', $this->file_path);
-      $correct =
-        await MirUtil::promptYesNo($this->getStdin(), 'Is this correct');
-    }
+    await MirUtil::genConfirm(
+      $this->getStdin(),
+      async () ==> {
+        $this->directory_path = await $this->promptDirectoryName();
+        $this->directory_path .= Str\is_empty($this->directory_path) ? '' : '/';
+        $this->file_path = Str\format(
+          '%s%s%s.php',
+          self::getControllerPath(),
+          $this->directory_path,
+          $this->controller_name,
+        );
+        $this->controller_url = $this->getControllerURL();
+        echo Str\format('Creating new controller at `%s`. ', $this->file_path);
+      },
+    );
 
     await $this->genCodegenController();
 
@@ -120,31 +117,30 @@ final class MirCodegen extends CLIWithArguments {
   }
 
   private async function genPage(): Awaitable<void> {
-    $correct = false;
+    await MirUtil::genConfirm(
+      $this->getStdin(),
+      async () ==> {
+        $this->raw_page_name = await $this->promptPageName();
+        $page_name = Str\format('%sPage', $this->raw_page_name);
+        echo Str\format('Page will be named \'%s\'. ', $page_name);
+        $this->page_name = $page_name;
+      },
+    );
 
-    while (!$correct) {
-      $this->raw_page_name = await $this->promptPageName();
-      $page_name = Str\format('%sPage', $this->raw_page_name);
-      echo Str\format('Page will be named \'%s\'. ', $page_name);
-      $this->page_name = $page_name;
-      $correct =
-        await MirUtil::promptYesNo($this->getStdin(), 'Is this correct');
-    }
-
-    $correct = false;
-    while (!$correct) {
-      $this->directory_path = await $this->promptDirectoryName();
-      $this->directory_path .= Str\is_empty($this->directory_path) ? '' : '/';
-      $this->file_path = Str\format(
-        '%s%s%s.php',
-        self::getPagePath(),
-        $this->directory_path,
-        $this->page_name,
-      );
-      echo Str\format('Creating new page at `%s`. ', $this->file_path);
-      $correct =
-        await MirUtil::promptYesNo($this->getStdin(), 'Is this correct');
-    }
+    await MirUtil::genConfirm(
+      $this->getStdin(),
+      async () ==> {
+        $this->directory_path = await $this->promptDirectoryName();
+        $this->directory_path .= Str\is_empty($this->directory_path) ? '' : '/';
+        $this->file_path = Str\format(
+          '%s%s%s.php',
+          self::getPagePath(),
+          $this->directory_path,
+          $this->page_name,
+        );
+        echo Str\format('Creating new page at `%s`. ', $this->file_path);
+      },
+    );
 
     await $this->genCodegenPage();
   }

@@ -8,6 +8,7 @@ use type Facebook\CLILib\{
   OutputInterface,
 };
 use namespace Facebook\CLILib\CLIOptions;
+use namespace Facebook\HHAST\__Private as HHAST;
 
 final class Mir extends CLIWithRequiredArguments {
 
@@ -25,9 +26,6 @@ final class Mir extends CLIWithRequiredArguments {
         $codegen =
           new MirCodegen(Vec\drop($this->getArgv(), 1), $this->getTerminal());
         $error_code = await $codegen->mainAsync();
-        break;
-      case 'lint':
-        echo 'Run the linter.';
         break;
       case 'route':
       case 'routes':
