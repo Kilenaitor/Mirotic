@@ -2,12 +2,12 @@
 
 class URLResolver {
 
-  public static async function genControllerForURLAndMethod(
+  public static async function getControllerForURLAndMethodAsync(
     string $url,
     HTTPMethod $method,
   ): Awaitable<BaseController> {
     list($controller_name, $controller_args) =
-      await self::genMapURLToControllerWithArgs($url, $method);
+      await self::mapURLToControllerWithArgsAsync($url, $method);
     return new $controller_name($controller_args);
   }
 
@@ -77,7 +77,7 @@ class URLResolver {
     return $final_param_map;
   }
 
-  public static async function genMapURLToControllerWithArgs(
+  public static async function mapURLToControllerWithArgsAsync(
     string $url,
     HTTPMethod $method,
   ): Awaitable<(classname<BaseController>, dict<string, mixed>)> {

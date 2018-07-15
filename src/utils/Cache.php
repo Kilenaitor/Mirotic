@@ -17,7 +17,7 @@ class Cache {
     return $val;
   }
 
-  public static async function genFromCache<T>(
+  public static async function getFromCacheAsync<T>(
     string $key,
     (function(): Awaitable<T>) $callback,
     int $timeout = 0,

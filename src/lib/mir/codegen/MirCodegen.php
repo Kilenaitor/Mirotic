@@ -8,7 +8,7 @@ use type Facebook\CLILib\{
   OutputInterface,
 };
 use namespace Facebook\CLILib\CLIOptions;
-use Facebook\HackCodegen\{
+use type Facebook\HackCodegen\{
   HackCodegenFactory,
   HackCodegenConfig,
   HackBuilderValues,

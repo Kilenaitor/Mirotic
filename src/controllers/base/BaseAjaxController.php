@@ -7,11 +7,11 @@ abstract class BaseAjaxController extends BaseController {
     return HTTPMethod::POST;
   }
 
-  protected abstract async function genResponse(): Awaitable<?string>;
+  protected abstract async function getResponseAsync(): Awaitable<?string>;
 
   <<__Override>>
-  final public async function genRender(): Awaitable<?:xhp> {
-    $response_body = await $this->genResponse();
+  final public async function renderAsync(): Awaitable<?:xhp> {
+    $response_body = await $this->getResponseAsync();
     // We explicitly want this to be plain text. Not XHP.
     echo $response_body;
     return null;

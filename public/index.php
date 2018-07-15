@@ -8,15 +8,18 @@ $request_method = HTTPMethod::assert($_SERVER['REQUEST_METHOD']);
 
 try {
   $controller = \HH\Asio\join(
-    URLResolver::genControllerForURLAndMethod($request_path, $request_method)
+    URLResolver::getControllerForURLAndMethodAsync(
+      $request_path,
+      $request_method,
+    ),
   );
-  echo \HH\Asio\join($controller->genRender());
+  echo \HH\Asio\join($controller->renderAsync());
 } catch (Exception $e) {
   if ($e instanceof BaseException) {
     // Something we've implemented and have a handle on
     http_response_code($e->getCode());
     echo (new BaseErrorPage())->render(
-     <div>{$e->getCode()}: {$e->getMessage()}</div>
+      <div>{$e->getCode()}: {$e->getMessage()}</div>,
     );
   } else {
     // Something went really wrong

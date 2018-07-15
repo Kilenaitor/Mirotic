@@ -8,7 +8,7 @@ final class HomeController extends BaseGetController {
   }
 
   <<__Override>>
-  public async function genRender(): Awaitable<?:xhp> {
+  public async function renderAsync(): Awaitable<?:xhp> {
     return (new HomePage())->getHTML(dict[]);
   }
 

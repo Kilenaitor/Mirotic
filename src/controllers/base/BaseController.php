@@ -26,7 +26,7 @@ abstract class BaseController {
   abstract public static function getHTTPMethod(): HTTPMethod;
 
   // The XHP output of the controller to be rendered
-  abstract public function genRender(): Awaitable<?:xhp>;
+  abstract public function renderAsync(): Awaitable<?:xhp>;
 
   public function getAdminLevel(): AdminLevel {
     return AdminLevel::PUBLIC;
