@@ -7,4 +7,11 @@ abstract class Mirotic {
   /* App */
   const APP_NAME = 'Mirotic';
   const DOMAIN = 'localhost';
+
+  const vec<string>
+    CONTROLLERS_TO_IGNORE_FROM_URLMAP = vec[
+      'BaseAjaxController.php',
+      'BaseController.php',
+      'BaseGetController.php',
+    ];
 }

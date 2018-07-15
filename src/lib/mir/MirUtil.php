@@ -61,4 +61,16 @@ final class MirUtil {
     return Str\strip_suffix(__DIR__, 'lib/mir');
   }
 
+  public static function getControllerPath(): string {
+    return MirUtil::getPathToSrc().'controllers';
+  }
+
+  public static function getPagePath(): string {
+    return MirUtil::getPathToSrc().'pages';
+  }
+
+  public static function getGeneratedPath(): string {
+    return MirUtil::getPathToSrc().'generated';
+  }
+
 }

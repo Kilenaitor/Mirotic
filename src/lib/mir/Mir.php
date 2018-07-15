@@ -15,9 +15,7 @@ final class Mir extends CLIWithRequiredArguments {
   public async function mainAsync(): Awaitable<int> {
     $arguments = $this->getArguments();
     $command = C\firstx($arguments);
-
-    $error_code = 0; // Default
-
+    $error_code = 0;
     switch ($command) {
       case 'generate':
         // CLIBase drops first argument on its own.

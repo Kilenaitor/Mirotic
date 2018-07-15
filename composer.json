@@ -15,10 +15,8 @@
         }
     ],
     "require-dev": {
-        "hhvm/hhast": "^3.27",
         "facebook/fbexpect": "^1.1",
         "facebook/hh-clilib": "^1.1",
-        "facebook/definition-finder": "^2.0",
         "facebook/hack-codegen": "^3.1"
     }
 }
