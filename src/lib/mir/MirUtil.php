@@ -10,7 +10,7 @@ use type Facebook\CLILib\{
 
 final class MirUtil {
 
-  public static async function genConfirm<T>(
+  public static async function confirmAsync<T>(
     InputInterface $in,
     (function(): Awaitable<T>) $body,
   ): Awaitable<?T> {
@@ -18,26 +18,26 @@ final class MirUtil {
     $correct = false;
     while (!$correct) {
       $response = await $body();
-      $correct = await MirUtil::promptYesNo($in, 'Is this correct');
+      $correct = await MirUtil::promptYesNoAsync($in, 'Is this correct');
     }
     return $response;
   }
 
-  public static async function promptYesNo(
+  public static async function promptYesNoAsync(
     InputInterface $in,
     string $promptText,
   ): Awaitable<bool> {
-    return await self::promptImpl($in, $promptText, true);
+    return await self::promptImplAsync($in, $promptText, true);
   }
 
-  public static async function promptNoYes(
+  public static async function promptNoYesAsync(
     InputInterface $in,
     string $promptText,
   ): Awaitable<bool> {
-    return await self::promptImpl($in, $promptText, false);
+    return await self::promptImplAsync($in, $promptText, false);
   }
 
-  private static async function promptImpl(
+  private static async function promptImplAsync(
     InputInterface $in,
     string $promptText,
     bool $defaultAnswer = true,

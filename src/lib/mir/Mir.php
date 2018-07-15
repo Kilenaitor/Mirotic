@@ -8,7 +8,6 @@ use type Facebook\CLILib\{
   OutputInterface,
 };
 use namespace Facebook\CLILib\CLIOptions;
-use namespace Facebook\HHAST\__Private as HHAST;
 
 final class Mir extends CLIWithRequiredArguments {
 
@@ -22,7 +21,7 @@ final class Mir extends CLIWithRequiredArguments {
     switch ($command) {
       case 'generate':
         // CLIBase drops first argument on its own.
-        // So, if we strip off process list, it'll strip off first command.
+        // So, if we strip off process name, it'll strip off first command.
         $codegen =
           new MirCodegen(Vec\drop($this->getArgv(), 1), $this->getTerminal());
         $error_code = await $codegen->mainAsync();

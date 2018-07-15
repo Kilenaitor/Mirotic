@@ -39,10 +39,10 @@ final class MirCodegen extends CLIWithArguments {
 
     switch ($codegen_type) {
       case 'controller':
-        await $this->genController();
+        await $this->controllerFlowAsync();
         break;
       case 'page':
-        await $this->genPage();
+        await $this->pageFlowAsync();
         break;
       case 'urlmap':
         echo 'urlmap';
@@ -61,8 +61,8 @@ final class MirCodegen extends CLIWithArguments {
     ];
   }
 
-  private async function genController(): Awaitable<void> {
-    await MirUtil::genConfirm(
+  private async function controllerFlowAsync(): Awaitable<void> {
+    await MirUtil::confirmAsync(
       $this->getStdin(),
       async () ==> {
         $this->controller_type = await $this->promptControllerType();
@@ -71,14 +71,14 @@ final class MirCodegen extends CLIWithArguments {
       },
     );
 
-    await MirUtil::genConfirm($this->getStdin(), async () ==> {
+    await MirUtil::confirmAsync($this->getStdin(), async () ==> {
       $this->raw_controller_name = await $this->promptControllerName();
       $controller_name = Str\format('%sController', $this->raw_controller_name);
       echo Str\format('Controller will be named %s. ', $controller_name);
       $this->controller_name = $controller_name;
     });
 
-    await MirUtil::genConfirm(
+    await MirUtil::confirmAsync(
       $this->getStdin(),
       async () ==> {
         $this->directory_path = await $this->promptDirectoryName();
@@ -94,11 +94,11 @@ final class MirCodegen extends CLIWithArguments {
       },
     );
 
-    await $this->genCodegenController();
+    await $this->codegenControllerAsync();
 
     $page_too = false;
     if ($this->controller_type === HTTPMethodClasses::GET) {
-      $page_too = await MirUtil::promptNoYes(
+      $page_too = await MirUtil::promptNoYesAsync(
         $this->getStdin(),
         'Would you like to generate a corresponding page',
       );
@@ -112,12 +112,12 @@ final class MirCodegen extends CLIWithArguments {
         $this->page_name,
       );
       echo Str\format('Creating new page at `%s`', $this->file_path);
-      await $this->genCodegenPage();
+      await $this->codegenPageAsync();
     }
   }
 
-  private async function genPage(): Awaitable<void> {
-    await MirUtil::genConfirm(
+  private async function pageFlowAsync(): Awaitable<void> {
+    await MirUtil::confirmAsync(
       $this->getStdin(),
       async () ==> {
         $this->raw_page_name = await $this->promptPageName();
@@ -127,7 +127,7 @@ final class MirCodegen extends CLIWithArguments {
       },
     );
 
-    await MirUtil::genConfirm(
+    await MirUtil::confirmAsync(
       $this->getStdin(),
       async () ==> {
         $this->directory_path = await $this->promptDirectoryName();
@@ -142,7 +142,7 @@ final class MirCodegen extends CLIWithArguments {
       },
     );
 
-    await $this->genCodegenPage();
+    await $this->codegenPageAsync();
   }
 
   private async function promptControllerName(): Awaitable<string> {
@@ -202,20 +202,20 @@ final class MirCodegen extends CLIWithArguments {
     }
   }
 
-  private async function genCodegenController(): Awaitable<void> {
+  private async function codegenControllerAsync(): Awaitable<void> {
     $cg = new HackCodegenFactory(new HackCodegenConfig());
     switch ($this->controller_type) {
       case HTTPMethodClasses::GET:
-        $file = $this->genCodegenGetController($cg);
+        $file = $this->codegenGetControllerAsync($cg);
         break;
       case HTTPMethodClasses::AJAX:
-        $file = $this->genCodegenAjaxController($cg);
+        $file = $this->codegenAjaxControllerAsync($cg);
         break;
     }
     $file->save();
   }
 
-  private async function genCodegenPage(): Awaitable<void> {
+  private async function codegenPageAsync(): Awaitable<void> {
     $cg = new HackCodegenFactory(new HackCodegenConfig());
     $cg->codegenFile($this->file_path)
       ->addClass(
@@ -237,7 +237,7 @@ final class MirCodegen extends CLIWithArguments {
       ->save();
   }
 
-  private function genCodegenGetController(
+  private function codegenGetControllerAsync(
     HackCodegenFactory $cg,
   ): \Facebook\HackCodegen\CodegenFile {
     return $cg->codegenFile($this->file_path)
@@ -273,7 +273,7 @@ final class MirCodegen extends CLIWithArguments {
       ->setIsSignedFile(false);
   }
 
-  private function genCodegenAjaxController(
+  private function codegenAjaxControllerAsync(
     HackCodegenFactory $cg,
   ): \Facebook\HackCodegen\CodegenFile {
     return $cg->codegenFile($this->file_path)
