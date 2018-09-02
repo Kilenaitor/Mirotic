@@ -18,7 +18,7 @@ abstract class BaseController {
   }
 
   // What arguments to look for in the url
-  public static function getParamDefinitions(): dict<string, string> {
+  public static function getParamDefinitions(): dict<string, ParamType> {
     return dict[];
   }
 
@@ -32,4 +32,10 @@ abstract class BaseController {
     return AdminLevel::PUBLIC;
   }
 
+}
+
+enum ParamType: string as string {
+  STRING = 'string';
+  INT = 'int';
+  FLOAT = 'float';
 }

@@ -22,10 +22,28 @@ use type Facebook\HHAST\{
 
 final class MirURLMapCodegen {
 
+  const URL_MAP_CLASS_NAME = 'URLMap';
   const type TUrlWithType = shape(
     'url' => string,
     'type' => HTTPMethod,
   );
+  const type TRouteWithClass = shape(
+    'route' => string,
+    'class' => classname<BaseController>,
+  );
+
+  // Route consts
+  const ROUTE_START = '/^';
+  const ROUTE_END = '\/?(\?.*)?$/';
+  const SLASH = '\/';
+  // Parameter Regex Replacements
+  const PARAMETER_PATTERN = '/\{\??\w+\}/';
+  const STRING_PARAM = '\w+';
+  const INT_PARAM = '[-+]?\d+';
+  const FLOAT_PARAM = '[-+]?[0-9]*\.?[0-9]+';
+
+  private dict<string, classname<BaseController>> $get_routes = dict[];
+  private dict<string, classname<BaseController>> $post_routes = dict[];
 
   public function __construct(private InputInterface $in) {}
 
@@ -40,11 +58,15 @@ final class MirURLMapCodegen {
     }
 
     $controllers = self::getAllControllers();
-    $urls_and_types = Vec\map(
-      $controllers,
-      $controller ==> self::getURLFromController($controller),
-    );
-    print_r($urls_and_types);
+    foreach ($controllers as $controller) {
+      $route = self::convertURLToRoute($controller);
+      if ($controller::getHTTPMethod() === HTTPMethod::GET) {
+        $this->get_routes[$route] = $controller;
+      } else {
+        $this->post_routes[$route] = $controller;
+      }
+    }
+    await $this->generateURLMapAsync();
     return 0;
   }
 
@@ -81,13 +103,116 @@ final class MirURLMapCodegen {
       );
   }
 
-  private static function getURLFromController(
+  private static function convertURLToRoute(
     classname<BaseController> $controller,
-  ): self::TUrlWithType {
-    return shape(
-      'url' => $controller::getURL(),
-      'type' => $controller::getHTTPMethod(),
-    );
+  ): string {
+    $route_string = self::ROUTE_START;
+    $url = $controller::getURL();
+    $definitions = $controller::getParamDefinitions();
+
+    $url_components = Str\split($url, '/')
+      |> Vec\filter($$, $component ==> !Str\is_empty($component));
+
+    if (C\is_empty($url_components)) {
+      // Home route
+      return $route_string.self::ROUTE_END;
+    } else {
+      $route_string .= self::SLASH;
+    }
+
+    foreach ($url_components as $component) {
+      $is_param = \preg_match(self::PARAMETER_PATTERN, $component);
+      if ($is_param) {
+        $param_name = Str\slice($component, 1, Str\length($component) - 2);
+        $is_optional = Str\starts_with($param_name, '?');
+        if ($is_optional) {
+          $param_name = Str\slice($param_name, 1);
+        }
+
+        if (!C\contains_key($definitions, $param_name)) {
+          throw new ParamNotFoundException();
+        }
+
+        $param_type = $definitions[$param_name];
+        switch ($param_type) {
+          case ParamType::STRING:
+            $route_string .= self::makeParam(self::STRING_PARAM, $is_optional);
+            break;
+          case ParamType::INT:
+            $route_string .= self::makeParam(self::INT_PARAM, $is_optional);
+            break;
+          case ParamType::FLOAT:
+            $route_string .= self::makeParam(self::FLOAT_PARAM, $is_optional);
+            break;
+        }
+      } else {
+        $route_string .= $component;
+      }
+    }
+    $route_string .= self::ROUTE_END;
+    return $route_string;
+  }
+
+  private async function generateURLMapAsync(): Awaitable<void> {
+    $cg = new HackCodegenFactory(new HackCodegenConfig());
+    $cg->codegenFile(self::getURLClassFilePath())
+      ->addClass(
+        $cg->codegenClass('URLMap')
+          ->addConst(
+            'URL_GET_PATTERNS',
+            $this->get_routes,
+            '',
+            HackBuilderValues::dict(
+              HackBuilderKeys::literal(),
+              HackBuilderValues::literal(),
+            ),
+          )
+          ->addConst('URL_POST_PATTERNS', $this->post_routes)
+          ->addMethod(
+            $cg->codegenMethod('getPatternsForMethod')
+              ->setIsOverride(false)
+              ->setIsStatic(true)
+              ->setReturnType('dict<string, classname<BaseController>>')
+              ->addParameter('HTTPMethod $method')
+              ->setBody(
+                $cg->codegenHackBuilder()
+                  ->startSwitch('$method')
+                  ->addCase('HTTPMethod::GET', HackBuilderValues::literal())
+                  ->returnCase(
+                    'self::URL_GET_PATTERNS',
+                    HackBuilderValues::literal(),
+                  )
+                  ->addCase('HTTPMethod::POST', HackBuilderValues::literal())
+                  ->returnCase(
+                    'self::URL_POST_PATTERNS',
+                    HackBuilderValues::literal(),
+                  )
+                  ->addDefault()
+                  ->addReturn(
+                    'self::URL_GET_PATTERNS',
+                    HackBuilderValues::literal(),
+                  )
+                  ->endDefault()
+                  ->endSwitch()
+                  ->getCode(),
+              ),
+          ),
+      )
+      ->setIsSignedFile(true)
+      ->save();
+  }
+
+  private static function getURLClassFilePath(): string {
+    return MirUtil::getGeneratedPath().'/'.self::URL_MAP_CLASS_NAME.'.php';
+  }
+
+  private static function makeParam(
+    string $pattern,
+    bool $optional = false,
+  ): string {
+    return Str\format('(\/%s)%s', $pattern, $optional ? '?' : '');
   }
 
 }
+
+class ParamNotFoundException extends Exception {}
