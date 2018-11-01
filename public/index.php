@@ -3,9 +3,14 @@
 require_once(__DIR__.'/../src/lib/init.php');
 
 try {
+  if (
+    !\HH\Lib\C\contains(HttpMethod::getValues(), Router::getRequestMethod())
+  ) {
+    throw new NotImplementedException();
+  }
   $controller = \HH\Asio\join(Router::genController());
   if (Router::getRequestMethod() !== HttpMethod::HEAD) {
-    // TODO: Return headers if it's a HEAD requ4est
+    // TODO: Return headers if it's a HEAD request
     echo \HH\Asio\join($controller->renderAsync());
   }
 } catch (Exception $e) {

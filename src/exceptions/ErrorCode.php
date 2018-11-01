@@ -9,4 +9,8 @@ enum ErrorCode: int as int {
   NOT_FOUND = 404;
   INVALID_METHOD = 405;
 
+  INTERNAL_ERROR = 500;
+  NOT_IMPLEMENTED = 501;
+  UNAVAILABLE = 503;
+
 }
