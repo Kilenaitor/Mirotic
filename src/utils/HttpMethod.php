@@ -1,6 +1,6 @@
 <?hh // strict
 
-enum HTTPMethod: string {
+enum HttpMethod: string {
   HEAD = 'HEAD';
   GET = 'GET';
   PUT = 'PUT';

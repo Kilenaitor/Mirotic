@@ -1,6 +1,6 @@
 <?hh // strict
 
-class URLBuilder {
+class UrlBuilder {
 
   private function __construct(
     private string $url,

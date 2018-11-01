@@ -20,12 +20,12 @@ use type Facebook\HHAST\{
   LiteralExpression,
 };
 
-final class MirURLMapCodegen {
+final class MirUrlMapCodegen {
 
   const URL_MAP_CLASS_NAME = 'URLMap';
   const type TUrlWithType = shape(
     'url' => string,
-    'type' => HTTPMethod,
+    'type' => HttpMethod,
   );
   const type TRouteWithClass = shape(
     'route' => string,
@@ -60,7 +60,7 @@ final class MirURLMapCodegen {
     $controllers = self::getAllControllers();
     foreach ($controllers as $controller) {
       $route = self::convertURLToRoute($controller);
-      if ($controller::getHTTPMethod() === HTTPMethod::GET) {
+      if ($controller::getHttpMethod() === HttpMethod::GET) {
         $this->get_routes[$route] = $controller;
       } else {
         $this->post_routes[$route] = $controller;
@@ -157,7 +157,7 @@ final class MirURLMapCodegen {
     $cg = new HackCodegenFactory(new HackCodegenConfig());
     $cg->codegenFile(self::getURLClassFilePath())
       ->addClass(
-        $cg->codegenClass('URLMap')
+        $cg->codegenClass('UrlMap')
           ->addConst(
             'dict<string, classname<BaseController>> URL_GET_PATTERNS',
             $this->get_routes,
@@ -197,16 +197,16 @@ final class MirURLMapCodegen {
               ->setIsOverride(false)
               ->setIsStatic(true)
               ->setReturnType('dict<string, classname<BaseController>>')
-              ->addParameter('HTTPMethod $method')
+              ->addParameter('HttpMethod $method')
               ->setBody(
                 $cg->codegenHackBuilder()
                   ->startSwitch('$method')
-                  ->addCase('HTTPMethod::GET', HackBuilderValues::literal())
+                  ->addCase('HttpMethod::GET', HackBuilderValues::literal())
                   ->returnCase(
                     'self::URL_GET_PATTERNS',
                     HackBuilderValues::literal(),
                   )
-                  ->addCase('HTTPMethod::POST', HackBuilderValues::literal())
+                  ->addCase('HttpMethod::POST', HackBuilderValues::literal())
                   ->returnCase(
                     'self::URL_POST_PATTERNS',
                     HackBuilderValues::literal(),

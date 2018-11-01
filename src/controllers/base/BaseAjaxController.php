@@ -3,8 +3,8 @@
 abstract class BaseAjaxController extends BaseController {
 
   <<__Override>>
-  public static function getHTTPMethod(): HTTPMethod {
-    return HTTPMethod::POST;
+  public static function getHttpMethod(): HttpMethod {
+    return HttpMethod::POST;
   }
 
   protected abstract /* async */ function getResponseAsync(): Awaitable<?string>;

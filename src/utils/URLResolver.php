@@ -1,10 +1,10 @@
 <?hh // strict
 
-class URLResolver {
+class UrlResolver {
 
   public static async function getControllerForURLAndMethodAsync(
     string $url,
-    HTTPMethod $method,
+    HttpMethod $method,
   ): Awaitable<BaseController> {
     list($controller_name, $controller_args) =
       await self::mapURLToControllerWithArgsAsync($url, $method);
@@ -15,16 +15,16 @@ class URLResolver {
     classname<BaseController> $controller_class,
     string $url,
     string $url_pattern,
-    HTTPMethod $method,
+    HttpMethod $method,
   ): dict<string, mixed> {
     switch ($method) {
-      case HTTPMethod::GET:
+      case HttpMethod::GET:
         return self::getArgMapForControllerAndURLForGet(
           $controller_class,
           $url,
           $url_pattern,
         );
-      case HTTPMethod::POST:
+      case HttpMethod::POST:
         return self::getArgMapForControllerAndURLForPost(
           $controller_class,
         );
@@ -79,10 +79,10 @@ class URLResolver {
 
   public static async function mapURLToControllerWithArgsAsync(
     string $url,
-    HTTPMethod $method,
+    HttpMethod $method,
   ): Awaitable<(classname<BaseController>, dict<string, mixed>)> {
     $url_key = '';
-    $url_map = URLMap::getPatternsForMethod($method);
+    $url_map = UrlMap::getPatternsForMethod($method);
     foreach (Keyset\keys($url_map) as $url_pattern) {
       $is_match = preg_match($url_pattern, $url);
       if ($is_match) {

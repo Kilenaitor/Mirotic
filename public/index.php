@@ -4,16 +4,14 @@ require_once(__DIR__.'/../src/lib/init.php');
 
 // The URL provided
 $request_path = $_SERVER['REQUEST_URI'];
-$request_method = HTTPMethod::assert($_SERVER['REQUEST_METHOD']);
+$request_method = HttpMethod::assert($_SERVER['REQUEST_METHOD']);
 
 try {
-  $controller = \HH\Asio\join(
-    URLResolver::getControllerForURLAndMethodAsync(
-      $request_path,
-      $request_method,
-    ),
-  );
-  echo \HH\Asio\join($controller->renderAsync());
+  $controller = \HH\Asio\join(Router::genController());
+  if (Router::getRequestMethod() !== HttpMethod::HEAD) {
+    // TODO: Return headers if it's a HEAD requ4est
+    echo \HH\Asio\join($controller->renderAsync());
+  }
 } catch (Exception $e) {
   if ($e instanceof BaseException) {
     // Something we've implemented and have a handle on

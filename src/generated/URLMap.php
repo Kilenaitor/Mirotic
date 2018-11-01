@@ -2,10 +2,10 @@
 /**
  * This file is generated. Do not modify it manually!
  *
- * @generated SignedSource<<f378057fcd42bc2a1ed7d118dd718051>>
+ * @generated SignedSource<<256fba69c35626c6b1e5c35b622db0d4>>
  */
 
-class URLMap {
+class UrlMap {
 
 
   const dict<string, classname<BaseController>> URL_GET_PATTERNS = dict[
@@ -16,12 +16,12 @@ class URLMap {
   ];
 
   public static function getPatternsForMethod(
-    HTTPMethod $method,
+    HttpMethod $method,
   ): dict<string, classname<BaseController>> {
     switch ($method) {
-      case HTTPMethod::GET:
+      case HttpMethod::GET:
         return self::URL_GET_PATTERNS;
-      case HTTPMethod::POST:
+      case HttpMethod::POST:
         return self::URL_POST_PATTERNS;
       default:
         return self::URL_GET_PATTERNS;

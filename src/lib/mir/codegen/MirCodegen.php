@@ -30,7 +30,7 @@ final class MirCodegen extends CLIWithArguments {
         break;
       case 'u':
       case 'urlmap':
-        $urlmap_codegen = new MirURLMapCodegen($this->getStdin());
+        $urlmap_codegen = new MirUrlMapCodegen($this->getStdin());
         await $urlmap_codegen->rebuildRoutesFlowAsync();
         break;
       default:
@@ -49,7 +49,7 @@ final class MirCodegen extends CLIWithArguments {
 
 }
 
-enum HTTPMethodClasses: string as string {
+enum HttpMethodClasses: string as string {
   GET = 'GET';
   AJAX = 'AJAX';
 }

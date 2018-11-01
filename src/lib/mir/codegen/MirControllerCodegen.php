@@ -18,7 +18,7 @@ final class MirControllerCodegen {
   // Controller
   private string $raw_controller_name = '';
   private string $controller_name = '';
-  private HTTPMethodClasses $controller_type = HTTPMethodClasses::GET;
+  private HttpMethodClasses $controller_type = HttpMethodClasses::GET;
   private string $controller_url = '';
 
   public function __construct(private InputInterface $in) {}
@@ -59,7 +59,7 @@ final class MirControllerCodegen {
     await $this->codegenControllerAsync();
 
     $page_too = false;
-    if ($this->controller_type === HTTPMethodClasses::GET) {
+    if ($this->controller_type === HttpMethodClasses::GET) {
       $page_too = await MirUtil::promptNoYesAsync(
         $this->in,
         'Would you like to generate a corresponding page',
@@ -92,19 +92,19 @@ final class MirControllerCodegen {
       $raw_controller_name = await $this->in->readLineAsync();
       $raw_controller_name = Str\trim($raw_controller_name);
     }
-    if ($this->controller_type === HTTPMethodClasses::AJAX) {
+    if ($this->controller_type === HttpMethodClasses::AJAX) {
       $raw_controller_name = Str\format('%sAjax', $raw_controller_name);
     }
     return $raw_controller_name;
   }
 
-  private async function promptControllerType(): Awaitable<HTTPMethodClasses> {
+  private async function promptControllerType(): Awaitable<HttpMethodClasses> {
     $controller_type = null;
     while ($controller_type === null) {
       echo "Type of controller [GET, AJAX]: ";
       $controller_type_raw = await $this->in->readLineAsync();
       $controller_type =
-        HTTPMethodClasses::coerce(Str\trim($controller_type_raw));
+        HttpMethodClasses::coerce(Str\trim($controller_type_raw));
     }
     return $controller_type;
   }
@@ -116,7 +116,7 @@ final class MirControllerCodegen {
   }
 
   private function getControllerURL(): string {
-    if ($this->controller_type === HTTPMethodClasses::GET) {
+    if ($this->controller_type === HttpMethodClasses::GET) {
       return Str\format(
         '/%s%s',
         $this->directory_path,
@@ -135,10 +135,10 @@ final class MirControllerCodegen {
   private async function codegenControllerAsync(): Awaitable<void> {
     $cg = new HackCodegenFactory(new HackCodegenConfig());
     switch ($this->controller_type) {
-      case HTTPMethodClasses::GET:
+      case HttpMethodClasses::GET:
         $file = $this->codegenGetControllerAsync($cg);
         break;
-      case HTTPMethodClasses::AJAX:
+      case HttpMethodClasses::AJAX:
         $file = $this->codegenAjaxControllerAsync($cg);
         break;
     }

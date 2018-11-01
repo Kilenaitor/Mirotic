@@ -23,7 +23,7 @@ abstract class BaseController {
   }
 
   // The type of method to call the controller with
-  abstract public static function getHTTPMethod(): HTTPMethod;
+  abstract public static function getHttpMethod(): HttpMethod;
 
   // The XHP output of the controller to be rendered
   abstract public function renderAsync(): Awaitable<?:xhp>;
