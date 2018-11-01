@@ -2,10 +2,6 @@
 
 require_once(__DIR__.'/../src/lib/init.php');
 
-// The URL provided
-$request_path = $_SERVER['REQUEST_URI'];
-$request_method = HttpMethod::assert($_SERVER['REQUEST_METHOD']);
-
 try {
   $controller = \HH\Asio\join(Router::genController());
   if (Router::getRequestMethod() !== HttpMethod::HEAD) {
