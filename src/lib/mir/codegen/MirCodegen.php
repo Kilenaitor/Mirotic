@@ -18,14 +18,17 @@ final class MirCodegen extends CLIWithArguments {
     $codegen_type = C\firstx($arguments);
     $error_code = 0;
     switch ($codegen_type) {
+      case 'c':
       case 'controller':
         $controller_codegen = new MirControllerCodegen($this->getStdin());
         await $controller_codegen->controllerFlowAsync();
         break;
+      case 'p':
       case 'page':
         $page_codegen = new MirPageCodegen($this->getStdin());
         await $page_codegen->pageFlowAsync();
         break;
+      case 'u':
       case 'urlmap':
         $urlmap_codegen = new MirURLMapCodegen($this->getStdin());
         await $urlmap_codegen->rebuildRoutesFlowAsync();

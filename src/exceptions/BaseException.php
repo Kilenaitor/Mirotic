@@ -3,14 +3,13 @@
 class BaseException extends Exception {
 
   protected string $message;
-  protected ErrorCode $code;
+  protected ErrorCode $error_code;
 
   // Redefine the exception so message isn't optional
-  public function __construct(string $message, ErrorCode $code): void {
-    // make sure everything is assigned properly
+  public function __construct(string $message, ErrorCode $error_code): void {
     $this->message = $message;
-    $this->code = $code;
-    parent::__construct($message, $code);
+    $this->error_code = $error_code;
+    parent::__construct($message, $error_code);
   }
 
   <<__Override>>
@@ -20,7 +19,7 @@ class BaseException extends Exception {
 
   <<__Override>>
   public function getCode(): ErrorCode {
-    return $this->code;
+    return $this->error_code;
   }
 
 }

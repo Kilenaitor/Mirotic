@@ -2,17 +2,17 @@
 /**
  * This file is generated. Do not modify it manually!
  *
- * @generated SignedSource<<f2dce66c46b5677a35faf1db49e44455>>
+ * @generated SignedSource<<f378057fcd42bc2a1ed7d118dd718051>>
  */
 
 class URLMap {
 
-  static dict<string, classname<BaseController>> $URL_GET_PATTERNS = dict [
-    '/^\/?(\?.*)?$/' => HomeController::class,
-    '/^\/admin(\/\w+)(\/\w+)?\/?(\?.*)?$/' => AdminController::class,
+
+  const dict<string, classname<BaseController>> URL_GET_PATTERNS = dict[
+    "/^\/?(\?.*)?\$/" => \HomeController::class,
   ];
 
-  const URL_POST_PATTERNS = dict [
+  const dict<string, classname<BaseController>> URL_POST_PATTERNS = dict[
   ];
 
   public static function getPatternsForMethod(
@@ -20,7 +20,7 @@ class URLMap {
   ): dict<string, classname<BaseController>> {
     switch ($method) {
       case HTTPMethod::GET:
-        return self::$URL_GET_PATTERNS;
+        return self::URL_GET_PATTERNS;
       case HTTPMethod::POST:
         return self::URL_POST_PATTERNS;
       default:

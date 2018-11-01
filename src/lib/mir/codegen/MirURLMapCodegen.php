@@ -159,15 +159,39 @@ final class MirURLMapCodegen {
       ->addClass(
         $cg->codegenClass('URLMap')
           ->addConst(
-            'URL_GET_PATTERNS',
+            'dict<string, classname<BaseController>> URL_GET_PATTERNS',
             $this->get_routes,
             '',
             HackBuilderValues::dict(
-              HackBuilderKeys::literal(),
-              HackBuilderValues::literal(),
+              HackBuilderKeys::lambda(
+                // But why not use regex prefix strings?!
+                // Because they are type Pattern under the hood,
+                // so they're not allowed as arraykeys.
+                // womp womp
+                ($_config, $value) ==> '"'.Str\replace_every(
+                    (string)$value,
+                    dict['$' => '\\$', '"' => '\\"'],
+                  ).
+                  '"',
+              ),
+              HackBuilderValues::classname(),
             ),
           )
-          ->addConst('URL_POST_PATTERNS', $this->post_routes)
+          ->addConst(
+            'dict<string, classname<BaseController>> URL_POST_PATTERNS',
+            $this->post_routes,
+            '',
+            HackBuilderValues::dict(
+              HackBuilderKeys::lambda(
+                ($_config, $value) ==> '"'.Str\replace_every(
+                    (string)$value,
+                    dict['$' => '\\$', '"' => '\\"'],
+                  ).
+                  '"',
+              ),
+              HackBuilderValues::classname(),
+            ),
+          )
           ->addMethod(
             $cg->codegenMethod('getPatternsForMethod')
               ->setIsOverride(false)

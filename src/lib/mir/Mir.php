@@ -17,6 +17,7 @@ final class Mir extends CLIWithRequiredArguments {
     $command = C\firstx($arguments);
     $error_code = 0;
     switch ($command) {
+      case 'g':
       case 'generate':
         // CLIBase drops first argument on its own.
         // So, if we strip off process name, it'll strip off first command.
@@ -24,6 +25,7 @@ final class Mir extends CLIWithRequiredArguments {
           new MirCodegen(Vec\drop($this->getArgv(), 1), $this->getTerminal());
         $error_code = await $codegen->mainAsync();
         break;
+      case 'r':
       case 'route':
       case 'routes':
         echo 'Print out all routes configured for the site';
@@ -46,25 +48,6 @@ final class Mir extends CLIWithRequiredArguments {
     return vec[
       'COMMAND',
     ];
-  }
-
-  <<__Override>>
-  public function displayHelp(OutputInterface $out): void {
-    echo "Welcome to Mir!\n\n";
-    echo
-      "Mir is the toolkit provided in Mirotic to automate various operations.\n";
-    echo "These include things like: \n";
-    echo "  Codegeneration\n";
-    echo "  Linting\n";
-    echo "  Debugging\n";
-    echo "  and more...\n\n";
-    echo
-      "There are many sub-utils in Mir. They are accessed with the appropriate command.\n";
-    echo "For example, to generate a new controller, you'd type:\n\n";
-    echo "  hhvm bin/mir codgen controller\n\n";
-    echo "and then follow the prompts from there.\n\n";
-    echo "To see a full list of commands, check the documentation.\n";
-    parent::displayHelp($this->getStdout());
   }
 
 }

@@ -7,7 +7,7 @@ abstract class BaseAjaxController extends BaseController {
     return HTTPMethod::POST;
   }
 
-  protected abstract async function getResponseAsync(): Awaitable<?string>;
+  protected abstract /* async */ function getResponseAsync(): Awaitable<?string>;
 
   <<__Override>>
   final public async function renderAsync(): Awaitable<?:xhp> {
