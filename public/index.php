@@ -16,13 +16,13 @@ try {
 } catch (Exception $e) {
   if ($e instanceof BaseException) {
     // Something we've implemented and have a handle on
-    http_response_code($e->getCode());
+    \http_response_code($e->getCode());
     echo (new BaseErrorPage())->render(
       <div>{$e->getCode()}: {$e->getMessage()}</div>,
     );
   } else {
     // Something went really wrong
-    http_response_code(500);
-    error_log($e);
+    \http_response_code(ErrorCode::INTERNAL_ERROR);
+    \error_log($e);
   }
 }
