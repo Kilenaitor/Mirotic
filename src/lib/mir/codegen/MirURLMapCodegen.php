@@ -22,7 +22,7 @@ use type Facebook\HHAST\{
 
 final class MirUrlMapCodegen {
 
-  const URL_MAP_CLASS_NAME = 'URLMap';
+  const URL_MAP_CLASS_NAME = 'UrlMap';
   const type TUrlWithType = shape(
     'url' => string,
     'type' => HttpMethod,
@@ -227,14 +227,18 @@ final class MirUrlMapCodegen {
   }
 
   private static function getURLClassFilePath(): string {
-    return MirUtil::getGeneratedPath().'/'.self::URL_MAP_CLASS_NAME.'.php';
+    return MirUtil::getRoutingPath().'/'.self::URL_MAP_CLASS_NAME.'.php';
   }
 
   private static function makeParam(
     string $pattern,
     bool $optional = false,
   ): string {
-    return Str\format('(\/%s)%s', $pattern, $optional ? '?' : '');
+    if ($optional) {
+      return Str\format('(?:\/(%s))?', $pattern);
+    } else {
+      return Str\format('\/(%s)', $pattern);
+    }
   }
 
 }

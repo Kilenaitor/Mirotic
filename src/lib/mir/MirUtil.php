@@ -69,8 +69,8 @@ final class MirUtil {
     return MirUtil::getPathToSrc().'pages';
   }
 
-  public static function getGeneratedPath(): string {
-    return MirUtil::getPathToSrc().'generated';
+  public static function getRoutingPath(): string {
+    return MirUtil::getPathToSrc().'routing';
   }
 
 }
